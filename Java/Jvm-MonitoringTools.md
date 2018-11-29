@@ -184,3 +184,24 @@ gc统计信息。`jstat -gc pid`
 #### 2.2.3、interval
 #### 2.2.4、count
 ### 2.3、jstatd
+
+#### 2.3.1、安全策略
+
+​	jstatd是监视具有适当的本机访问权限的JVM，因此，jstatd进程必须使用与目标jvm相同的用户运行。但是对于Linux系统中的root用户，其具有访问系统上任何JVM的权限，所以用root账号运行jstatd进程也可以监视所需的JVM，但会带来其他的安全问题，故不推荐。
+
+​	jstatd服务器不提供远程客户端任何身份验证，因此，在启动jstatd进程之前，一定要考虑本地的安全策略。若未安装其他的安全管理器，jstatd会安装RMISecurityPolicy实例，因此需要指定安全策略文件，具体请参考[这里](http://docs.oracle.com/javase/8/docs/technotes/guides/security/PolicyFiles.html)。
+
+​	在`JAVA_HOME/bin`目录下新建名为`jstatd.all.policy`的文件，并复制一下代码：
+
+```shell
+grant codebase "file:${java.home}/../lib/tools.jar" {   
+    permission java.security.AllPermission;
+};
+```
+
+​	运行命令`jstatd -J-Djava.security.policy=jstatd.all.policy`，即可启动本机的RMI服务。
+
+#### 2.3.2、开启日志
+
+`jstatd -J-Djava.security.policy=jstatd.all.policy -J-Djava.rmi.server.logCalls=true`
+
