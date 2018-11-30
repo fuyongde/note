@@ -196,8 +196,6 @@ yum install yum-utils
 yum install vim
 ```
 
-
-
 ## 4.DB
 
 ### 4.1.MySQL
