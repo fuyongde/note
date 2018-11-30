@@ -78,7 +78,7 @@ ONBOOT="yes"
 nmtui edit eth0
 ```
 
-#### 2.3.4.当前网卡设置
+#### 2.2.4.当前网卡设置
 
 ```
 TYPE=Ethernet
@@ -111,14 +111,14 @@ DNS2=114.114.115.115
 firewall-cmd --state
 ```
 
-####2.3.2.防火墙重载
+#### 2.3.2.防火墙重载
 
 ```shell
 firewall-cmd --reload
 firewall-cmd --complete-reload
 ```
 
-####2.3.3.开放端口或服务
+#### 2.3.3.开放端口或服务
 
 开放端口
 
