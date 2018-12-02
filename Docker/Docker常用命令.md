@@ -9,9 +9,13 @@
   `docker search [OPTIONS] TERM`
 
 - Options：
+
   `-f --filter` ：根据提供的条件过滤输出
+
   `--format` ：使用Go模板进行漂亮的打印搜索
+
   `--limit` ：最大搜索结果数（默认为25）
+
   `--no-trunc`：不要截断输出
 
 - Example：
@@ -23,10 +27,13 @@ docker search mysql
 ### 1.2、安装所需的容器
 
 - Usage：
+
   `docker pull [OPTIONS] NAME[:TAG|@DIGEST]`
 
 - Options：
+
   `-a --all-tags`：下载存储库中的所有标记镜像
+  
   `--disable-content-trust`：跳过图像验证（默认为true）
 
 - Example：
