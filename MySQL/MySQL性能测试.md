@@ -38,17 +38,10 @@ Benchmark
 上述示例中结果的意义：
 
 ```shell
-#表示运行的是innodb存储引擎
-Running for engine innodb
-#查询平均耗时
-Average number of seconds to run all queries: 0.693 seconds
-#查询最低耗时
-Minimum number of seconds to run all queries: 0.693 seconds
-#查询最高耗时
-Maximum number of seconds to run all queries: 0.693 seconds
-#运行的客户端数量
-Number of clients running queries: 100
-#每个客户端平均运行50次查询(5000/100=50)
-Average number of queries per client: 50
+Running for engine innodb #表示运行的是innodb存储引擎
+Average number of seconds to run all queries: 0.693 seconds #查询平均耗时
+Minimum number of seconds to run all queries: 0.693 seconds #查询最低耗时
+Maximum number of seconds to run all queries: 0.693 seconds #查询最高耗时
+Number of clients running queries: 100 #运行的客户端数量
+Average number of queries per client: 50 #每个客户端平均运行50次查询(5000/100=50)
 ```
-
