@@ -40,18 +40,14 @@
 
 如果推荐的收集器未达到所需的性能，请首先尝试调整堆和生成大小，以满足所需的目标。如果性能仍然不足，请尝试使用其他收集器: 使用并发收集器减少暂停时间，并使用并行收集器增加多处理器硬件上的整体吞吐量。
 
-## 2、优化
+## 2、代
+[Oracle官方](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/generations.html)提供了一个对象寿命的典型分布，如下图所示：
 
-### 2.1、
+![Description of Figure 3-1 follows](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/img/jsgct_dt_003_alc_vs_srvng.png)
 
-### 2.2、基于行为的优化
+从图中可以看出，有些对象寿命长，有些对象寿命短。所以内存的分代管理就显的尤为重要。若垃圾收集成为系统的瓶颈，则很可能必须通过自定义堆的总大小以及各个代的大小，并检查详细的垃圾收集器输出, 然后探索单个性能指标对垃圾回收器参数的敏感性。下图展示了JVM的分代模型（并行收集器和G1除外）。
 
-#### 2.2.1、最大暂停时间
+![Description of Figure 3-2 follows](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/img/jsgct_dt_001_armgnt_gn.png)
 
-#### 2.2.2、吞吐量
-
-#### 2.2.3、内存占用
-
-### 2.3、调优策略
-
-#### 2.3.1、
+在初始化时, 最大地址空间几乎是保留的, 但除非需要, 否则不会分配给物理内存。为对象记忆保留的完整地址空间可以分为年轻的一代和终身的一代。
+年轻代由eden和两个幸存者空间组成。大多数对象最初是在eden中分配的。一个幸存者空间在任何时候都是空的, 是eden中任何活物的目的地;另一个幸存者空间是下一个复制集合期间的目标。对象以这种方式在幸存者空间之间复制, 直到它们足够老, 可以终身工作(复制到老年代)。
