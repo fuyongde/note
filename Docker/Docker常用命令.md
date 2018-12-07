@@ -45,6 +45,8 @@ docker search mysql
   docker pull mysql
   # 安装所有版本
   docker pull -a mysql
+  # 安装zookeeper
+  docker pull zookeeper
   ```
 
 ## 2、常用命令
@@ -66,6 +68,8 @@ Example：
 ```shell
 # 启动MySQL
 docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=fuyongde mysql:5.7.24
+# 启动zookeeper
+docker run -p 2181:2181 zookeeper
 ```
 
 ### 2.3、停止容器
