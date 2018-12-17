@@ -67,19 +67,26 @@ Example：
 
 ```shell
 # 启动MySQL
-docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=fuyongde mysql:5.7.24
+docker run -p 3306:3306 --name MySQL -e MYSQL_ROOT_PASSWORD=fuyongde mysql:5.7.24
 # 启动zookeeper
-docker run -p 2181:2181 zookeeper
+docker run -p 2181:2181 --name zookeeper zookeeper
 ```
 
 ### 2.3、停止容器
 
 `docker stop [containerId]`：停止容器
 
-### 2.4、删除容器
+### 2.4、重启容器
+
+```shell
+# 重启id为1e4b2a31028d的容器
+docker restart 1e4b2a31028d
+```
+
+### 2.5、删除容器
 
 `docker rm [containerId]`：删除容器
 
-### 2.5、重命名
+### 2.6、重命名
 
 `docker rename docker-mysql mysql`：将docker-mysql重命名为mysql
