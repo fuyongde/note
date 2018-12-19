@@ -224,7 +224,7 @@ String s = JSON.toJSONString(o);
 
 ### 4、SSH
 
-我们还可以通过SSH或TELNET监控和管理我们的应用，这一点spring boot是借助[CraSH](http://www.crashub.org)来实现。需要注意的是，**springboot2.0之后的版本已经废弃该用法**。
+我们还可以通过SSH或TELNET监控和管理我们的应用，这一点spring boot是借助[CraSH](http://www.crashub.org)来实现。需要注意的是，__springboot2.0之后的版本已经废弃该用法__。
 
 #### 4.1、依赖
 

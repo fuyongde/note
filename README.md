@@ -17,4 +17,4 @@
 
 ## Spring
 
-- [Springboot应用监控](https://github.com/fuyongde/note/blob/master/Java/Springboot%E5%BA%94%E7%94%A8%E7%9B%91%E6%8E%A7.md)
+- [Springboot应用监控](https://github.com/fuyongde/note/blob/master/Spring/Springboot%E5%BA%94%E7%94%A8%E7%9B%91%E6%8E%A7.md)
