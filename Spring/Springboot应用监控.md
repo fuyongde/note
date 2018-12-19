@@ -316,7 +316,8 @@ configurationPropertiesReportEndpoint
 ```result
 GARBAGE COLLECTION
 name :PS Scavenge
-name              value                                                                 ------------------------------------                                                   
+name              value
+------------------------------------                                                   
 collection count  13                                                                   
 collection time   207                                                                   
 mpool name        PS Eden Space                                                         
