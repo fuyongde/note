@@ -49,15 +49,18 @@ docker search mysql
   docker pull zookeeper
   ```
 
-## 2、常用命令
+## 2、容器管理
 
 ### 2.1、查看容器
 
-`docker ps`：查看所有正在运行的容器
-
-`docker ps -a`：查看所有容器
-
-`docker ps -a -q`：查看所有容器ID
+```shell
+# 查看所有正在运行的容器
+docker ps
+# 查看所有容器
+docker ps -a
+查看所有容器ID
+docker ps -a -q
+```
 
 ### 2.2、启动容器
 
@@ -76,6 +79,13 @@ docker run -p 2181:2181 --name zookeeper zookeeper
 
 `docker stop [containerId]`：停止容器
 
+Example:
+
+```shell
+# 删除id为8fcc3dad236a的容器
+docker rm 8fcc3dad236a
+```
+
 ### 2.4、重启容器
 
 ```shell
@@ -85,8 +95,60 @@ docker restart 1e4b2a31028d
 
 ### 2.5、删除容器
 
-`docker rm [containerId]`：删除容器
+`docker rm [containerId]`
 
-### 2.6、重命名
+```shell
+# 删除id为1e4b2a31028d的容器
+docker rm 1e4b2a31028d
+```
 
-`docker rename docker-mysql mysql`：将docker-mysql重命名为mysql
+### 2.6、重命名容器
+
+```shell
+# 将docker-mysql重命名为mysql
+docker rename docker-mysql mysql
+```
+
+## 3、镜像管理
+
+### 3.1、查看镜像信息
+
+Usage：
+
+`docker images [OPTIONS] [REPOSITORY[:TAG]]`
+
+Options:
+
+`-a, --all`：展示全部镜像
+`--digests`：展示镜像的哈希值
+`-f, --filter filter`：根据提供的条件过滤输出
+`--format string`：使用Go模板的漂亮打印图像
+`--no-trunc`：不要截断输出
+`-q, --quiet`：仅显示数字ID
+
+Example:
+
+```shell
+# 查看所有的进行信息
+docker images -a
+```
+
+### 3.2、删除镜像
+
+Usage：
+
+`docker rmi [OPTIONS] IMAGE [IMAGE...]`
+
+Options:
+ `-f, --force`：强制删除某个镜像
+ `--no-prune ` ：不删除未标记的父类
+
+Example：
+
+```shell
+# 删除id为cd14cecfdb3a的镜像
+docker rmi cd14cecfdb3a
+# 删除jenkins镜像
+docker rmi jenkins
+```
+
