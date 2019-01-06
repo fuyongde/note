@@ -120,10 +120,10 @@ Usage：
 Options:
 
 `-a, --all`：展示全部镜像
-`--digests`：展示镜像的哈希值
+​    `--digests`：展示镜像的哈希值
 `-f, --filter filter`：根据提供的条件过滤输出
-`--format string`：使用Go模板的漂亮打印图像
-`--no-trunc`：不要截断输出
+​    `--format string`：使用Go模板的漂亮打印图像
+​    `--no-trunc`：不要截断输出
 `-q, --quiet`：仅显示数字ID
 
 Example:
@@ -152,3 +152,8 @@ docker rmi cd14cecfdb3a
 docker rmi jenkins
 ```
 
+## 4、其他命令
+
+### 4.1、进入到一个容器
+
+` docker exec -it 063caee1d235 /bin/bash`
