@@ -1,6 +1,6 @@
 # MySQL参数说明
 
-### 1.1、查看所有参数
+## 1、查看所有参数
 
 ```mysql
 mysql> SHOW VARIABLES;
@@ -8,7 +8,85 @@ mysql> SHOW VARIABLES;
 
 结果集见附录1
 
+## 2、慢查询相关
 
+### 2.1、慢查询日志开关
+
+#### 2.1.1、查看慢查询日志的开关情况
+
+Usage:
+
+```mysql
+mysql> SHOW VARIABLES LIKE '%slow_query_log%';
+```
+
+Result:
+
+| Variable_name       | Value                                |
+| ------------------- | ------------------------------------ |
+| slow_query_log      | OFF                                  |
+| slow_query_log_file | /var/lib/mysql/17998065ff2d-slow.log |
+
+#### 2.1.2、打开慢查询日志
+
+Usage:
+
+```mysql
+-- 打开MySQL慢查询日志
+mysql> SET GLOBAL slow_query_log = ON;
+-- 或者用这种方式
+mysql> SET GLOBAL slow_query_log = 1;
+```
+
+### 2.2、慢查询阈值
+
+#### 2.2.1、查询慢查询阈值
+
+Usage:
+
+```mysql
+mysql> SHOW VARIABLES LIKE 'long_query_time';
+```
+
+Result:
+
+| Variable_name   | Value     |
+| --------------- | --------- |
+| long_query_time | 10.000000 |
+
+#### 2.2.2、设置慢查询阈值
+
+Usage:
+
+```mysql
+mysql> SET GLOBAL long_query_time = 0.1;
+```
+
+### 2.3、未使用索引的情况
+
+#### 2.3.1、查看未使用索引的查询是否计入慢查询日志
+
+Usage:
+
+```mysql
+mysql> SHOW VARIABLES LIKE '%log_queries_not_using_indexes%';
+```
+
+Result:
+
+| Variable_name                 | Value |
+|-------------------------------|-------|
+| log_queries_not_using_indexes | OFF   |
+
+#### 2.3.2、打开未使用索引记入慢查询日志
+
+Usage:
+
+```mysql
+mysql> SET GLOBAL log_queries_not_using_indexes = ON;
+-- 或者
+mysql> SET GLOBAL log_queries_not_using_indexes = 1;
+```
 
 
 
