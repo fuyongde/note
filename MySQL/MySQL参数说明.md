@@ -59,6 +59,7 @@ Result:
 Usage:
 
 ```mysql
+-- 设置完之后，在当前窗口查询，可能存在值不变的情况，重新打开窗口查询即可。
 mysql> SET GLOBAL long_query_time = 0.1;
 ```
 
@@ -88,7 +89,41 @@ mysql> SET GLOBAL log_queries_not_using_indexes = ON;
 mysql> SET GLOBAL log_queries_not_using_indexes = 1;
 ```
 
+## 3、事务
 
+### 3.1、事务隔离级别
+
+#### 3.1.1、查看当前数据的事务隔离级别
+
+Usage:
+
+```mysql
+-- 查看当前数据库事务隔离级别
+mysql> SHOW VARIABLES LIKE '%transaction_isolation%';
+-- 或者
+mysql> SELECT @@transaction_isolation;
+-- 低版本的MySQL属性是不一样的
+mysql> SHOW VARIABLES LIKE '%tx_isolation%';
+-- 或者
+mysql> SELECT @@tx_isolation;
+```
+
+### 3.2、不同的事务隔离级别所面对的问题
+
+| 事务隔离级别                 | 脏读 | 不客重复读 | 幻读 |
+| ---------------------------- | ---- | ---------- | ---- |
+| 读未提交（read-uncommitted） | 是   | 是         | 是   |
+| 不可重复读（read-committed） | 否   | 是         | 是   |
+| 可重复读（repeatable-read）  | 否   | 否         | 是   |
+| 串行化（serializable）       | 否   | 否         | 否   |
+
+- `脏读`：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据
+
+- `不可重复读`：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
+
+- `幻读`：系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。
+
+小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表。
 
 # 附录
 
