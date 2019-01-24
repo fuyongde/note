@@ -173,7 +173,7 @@ mysq> SELECT * FROM wallet WHERE user_id = 1;
 mysql> ROLLBACK;
 ```
 
-### 3.3.5、客户端A修改用户余额
+#### 3.3.5、客户端A修改用户余额
 ```mysql
 -- 客户端A修改用户余额
 mysq> UPDATE wallet SET balance = balance - 500 WHERE user_id = 1;
