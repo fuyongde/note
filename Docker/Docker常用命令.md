@@ -156,4 +156,12 @@ docker rmi jenkins
 
 ### 4.1、进入到一个容器
 
-` docker exec -it 063caee1d235 /bin/bash`
+`docker exec -it 063caee1d235 /bin/bash`
+
+### 4.2、拷贝文件到一个容器
+
+`docker cp C:\Users\fuyon\Documents\repo\github\goku\atomikos-demo\zhifubao-server\src\main\resources\sql\zhifubao.sql 1e4b2a31028d:/tmp`
+
+### 4.3、从容器拷贝文件到主机
+
+`docker cp 1e4b2a31028d:/tmp/zhifubao.sql C:\Users\fuyon\Documents`
