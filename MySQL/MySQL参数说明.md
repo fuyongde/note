@@ -113,7 +113,7 @@ mysql> SELECT @@tx_isolation;
 | 事务隔离级别                 | 脏读 | 不客重复读 | 幻读 |
 | ---------------------------- | ---- | ---------- | ---- |
 | 读未提交（read-uncommitted） | 是   | 是         | 是   |
-| 不可重复读（read-committed） | 否   | 是         | 是   |
+| 读已提交（read-committed）   | 否   | 是         | 是   |
 | 可重复读（repeatable-read）  | 否   | 否         | 是   |
 | 串行化（serializable）       | 否   | 否         | 否   |
 
@@ -124,6 +124,72 @@ mysql> SELECT @@tx_isolation;
 - `幻读`：系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。
 
 小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表。
+
+### 3.3、read-uncommitted脏读的场景
+
+#### 3.3.1、客户端A先开启事务，查询用户余额
+
+```mysql
+-- 客户端A设置当前会话级别为`read-uncommitted`
+mysq> SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+-- 客户端A开启事务
+mysq> START TRANSACTION;
+-- 客户端A查询用户余额
+mysq> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
++----+---------+-----------+
+| id | user_id | balance   |
++----+---------+-----------+
+|  1 |       1 | 100000000 |
++----+---------+-----------+
+```
+
+#### 3.3.2、客户端B开启事务，并修改用户余额
+
+```mysql
+-- 客户端B设置当前会话级别为`read-uncommitted`
+mysq> SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+-- 客户端B开启事务
+mysq> START TRANSACTION;
+-- 客户端B修改用户余额，
+mysql> UPDATE wallet SET balance = balance + 100 WHERE user_id = 1;
+```
+
+#### 3.3.3、客户端A查询用户余额
+```mysql
+-- 客户端A获取用户余额（此时由于B的事务并未提交，故A事务读到了B事务已经更新后的数据，此时发生脏读）
+mysq> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
++----+---------+-----------+
+| id | user_id | balance   |
++----+---------+-----------+
+|  1 |       1 | 100000100 |
++----+---------+-----------+
+```
+
+#### 3.3.4、客户端B回滚事务
+```mysql
+-- 客户端B回滚事务
+mysql> ROLLBACK;
+```
+
+### 3.3.5、客户端A修改用户余额
+```mysql
+-- 客户端A修改用户余额
+mysq> UPDATE wallet SET balance = balance - 500 WHERE user_id = 1;
+
+-- 客户端A查询用户余额
+mysq> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
++----+---------+----------+
+| id | user_id | balance  |
++----+---------+----------+
+|  1 |       1 | 99999500 |
++----+---------+----------+
+-- 对于A客户端来讲，此时的结果是很奇怪的，。
+-- 客户端A提交事务
+mysql> COMMIT;
+```
 
 # 附录
 
