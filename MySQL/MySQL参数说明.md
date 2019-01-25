@@ -111,7 +111,7 @@ mysql> SELECT @@tx_isolation;
 ### 3.2、不同的事务隔离级别所面对的问题
 
 | 事务隔离级别                 | 脏读 | 不可重复读 | 幻读 |
-| ----------------------------| ---- | ---------- | ---- |
+| ----------------------------| ---- | --------- | ---- |
 | 读未提交（read-uncommitted） | 是   | 是         | 是   |
 | 读已提交（read-committed）   | 否   | 是         | 是   |
 | 可重复读（repeatable-read）  | 否   | 否         | 是   |
@@ -125,7 +125,7 @@ mysql> SELECT @@tx_isolation;
 
 小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表。
 
-### 3.3、read-uncommitted脏读的场景
+### 3.3、脏读的场景
 
 #### 3.3.1、客户端A先开启事务，查询用户余额
 
@@ -190,6 +190,82 @@ mysq> SELECT * FROM wallet WHERE user_id = 1;
 -- 客户端A提交事务
 mysql> COMMIT;
 ```
+
+### 3.4、不可重复读的场景
+
+#### 3.4.1、客户端A开启事务，查询用户余额
+
+```mysql
+-- 客户端A设置当前会话级别为`read-committed`
+mysql> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 客户端A开启事务
+mysql> BEGIN;
+-- 客户端A查询用户余额
+SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下:
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     200 |
+# +----+---------+---------+
+```
+
+#### 3.4.2、客户端B开启事务，并修改用户余额
+
+```mysql
+-- 客户端B设置当前会话级别为`read-committed`
+mysql> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 客户端B开启事务
+mysql> BEGIN;
+-- 客户端B修改用户余额
+mysql> UPDATE wallet SET balance = balance + 100 WHERE user_id = 1;
+-- 客户端B查询用户余额
+mysql> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     300 |
+# +----+---------+---------+
+```
+
+#### 3.4.3、客户端A查询用户余额
+
+```mysql
+-- 客户端A查询用户余额
+mysql> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     200 |
+# +----+---------+---------+
+-- 此时客户端B的事务还没有提交，故客户端A不能查询到B事务已经更新的数据，解决了脏读的问题
+```
+
+#### 3.4.4、客户端B提交事务
+
+```mysql
+-- 客户端B提交事务
+mysql> COMMIT;
+```
+
+#### 3.4.5、客户端A查询用户余额
+
+```mysql
+-- 客户端A查询用户余额
+mysql> SELECT * FROM wallet WHERE user_id = 1;
+-- 结果如下：
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     300 |
+# +----+---------+---------+
+-- 此时客户端B的事务还已经提交，结果与上一步不一致，即产生了不可重复读的问题。
+-- 客户端A提交事务
+mysql> COMMIT;
+```
+
 
 # 附录
 
