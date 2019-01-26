@@ -266,6 +266,65 @@ mysql> SELECT * FROM wallet WHERE user_id = 1;
 mysql> COMMIT;
 ```
 
+### 3.5 幻读的场景
+
+#### 3.5.1、客户端A开启事务，查询所有用户
+
+```mysql
+-- 客户端A设置当前会话级别为`repeatable-read`
+mysql> SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+-- 客户端A开启事务
+mysql> BEGIN;
+-- 客户端A查询所有用户余额
+SELECT * FROM wallet;
+-- 结果如下:
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     100 |
+# +----+---------+---------+
+```
+
+#### 3.5.2、客户端B开启事务，并插入一条记录
+
+```mysql
+-- 客户端B设置当前会话级别为`repeatable-read`
+mysql> SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+-- 客户端B开启事务
+mysql> BEGIN;
+-- 客户端B查询所有用户余额
+SELECT * FROM wallet;
+-- 结果如下:
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     100 |
+# +----+---------+---------+
+-- 客户端B插入一条记录
+mysq> INSERT INTO wallet (`id`, `user_id`, `balance`) VALUES (2, 2, 200);
+-- 客户端B查询所有的用户余额
+mysql> SELECT * FROM wallet;
+-- 结果如下
+# +----+---------+---------+
+# | id | user_id | balance |
+# +----+---------+---------+
+# |  1 |       1 |     100 |
+# |  2 |       2 |     200 |
+# +----+---------+---------+
+-- 客户端B提交事务
+mysq> COMMIT;
+```
+
+#### 3.5.3、客户端A插入一条记录
+
+```mysql
+-- 客户A插入id为2的记录
+mysql> INSERT INTO wallet (`id`, `user_id`, `balance`) VALUES (2, 2, 200);
+-- 结果失败了，此时发生幻读。
+ERROR 1062 (23000): Duplicate entry '2' for key 'PRIMARY'
+-- 客户端A回滚
+mysql> ROLLBACK;
+```
 
 # 附录
 
