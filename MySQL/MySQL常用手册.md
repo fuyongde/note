@@ -361,7 +361,7 @@ Usage:
 
 ```shell
 # 备份支付宝库下的wallet表
-mysqldump -uroot -p zhifubao wallet
+mysqldump -uroot -p zhifubao wallet > /tmp/wallet.sql
 # 备份支付宝库下的wallet、wallet_backup表
 mysqldump -uroot -p zhifubao wallet wallet_backup
 ```
