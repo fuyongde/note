@@ -27,3 +27,9 @@
 - 异构软硬件平台的可移植性
 
 `HDFS`在设计的时候就考虑到平台的可移植性。这种特性方便了HDFS作为大规模数据应用平台的推广。
+
+## NameNode和DataNode
+
+`HDFS`是主从架构，一个`HDFS`集群由一个namenode和一定数量的datanode组成。`NameNode`是一个中心服务器，负责管理系统的命名空间以及客户端对文件的访问。`DataNode`一般是一个节点一个，负责管理所在节点上的存储。`HDFS`暴露了文件系统的命名空间，用户以文件形式在HDFS中存储数据，在内部看，一个文件其实会被分成一个或多个数据块，这些数据库存储在一组`datanode`上。`Namenode`执行文件系统的命名空间的操作，比如打开、关闭、重命名文件或目录，同时也负责，确定的数据块到具体的`datanode`节点的映射，`DataNode`负责处理客户端的读写请求，在`NameNode`的统一调度下进行数据块的创建、删除、和复制。
+
+![架构图](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/images/hdfsarchitecture.png)
