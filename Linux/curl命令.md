@@ -24,7 +24,7 @@ curl https://www.baidu.com/
 # 访问百度、Bing（顺序是百度->Bing），默认情况下使用GET请求
 curl https://www.baidu.com/ https://cn.bing.com/
 # 此时会发送同样的参数到两个URL，由于使用了--data，故该请求会采用POST的方式
-curl --data name=fuyongde https://www.baidu.com/ https://cn.bing.com/
+curl --data "name=fuyongde&age=18" https://www.baidu.com/ https://cn.bing.com/
 ```
 
 ##### --get
@@ -33,7 +33,7 @@ curl --data name=fuyongde https://www.baidu.com/ https://cn.bing.com/
 
 ```shell
 # 该示例会以GET的方式访问/api/hello，并将参数传递给对应的服务
-curl --data name=fuyongde --get http://192.168.0.88:8080/api/hello
+curl --data "name=fuyongde&age=18" --get http://192.168.0.88:8080/api/hello
 ```
 
 ##### --data、--data-ascii、--data-binary、--data-urlencode
@@ -77,4 +77,7 @@ curl -O https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/copy_rignt
 ```shell
 # POST json 
 curl -H "Content-Type:application/json" -X POST --data '{"name":"fuyongde"}' http://localhost:8080/api/hello
+
+# 指定多个Header
+curl -H "Content-Type:application/json" -H "Token:abc" -X POST --data '{"name":"fuyongde"}' http://localhost:8080/api/hello
 ```
