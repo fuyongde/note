@@ -26,6 +26,22 @@ wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 yum makecache
 ```
 
+### 1.4.安装其他的源
+
+```shell
+# 安装remi的源
+yum install remi-release
+# CentOS 6 / RHEL 6
+yum install http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+# CentOS 7 / RHEL 7
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+#安装epel源
+yum install epel-release
+# 或 epel-release-7-11.noarch.rpm
+yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+```
+
 ## 2.网络
 
 ### 2.1.net-tools工具
