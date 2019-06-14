@@ -63,7 +63,7 @@ curl --trace-ascii debugdump.txt --trace-time https://www.baidu.com/
 
 ##### 保存访问的网页
 
-```powershell
+```shell
 # 使用Linux的的重定向功能保存
 curl https://www.baidu.com/ >> baidu.html
 # 使用curl内置的-o参数保存网页
