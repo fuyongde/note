@@ -156,7 +156,13 @@ docker rmi jenkins
 
 ### 4.1、进入到一个容器
 
+通常我们使用的docker容器环境一般是`Linux`，则可以通过下面的方式进入到docker容器内:
+
 `docker exec -it 063caee1d235 /bin/bash`
+
+但是对于`Alpinelinux`，则需：
+
+`docker exec -it 063caee1d235 sh`
 
 ### 4.2、拷贝文件到一个容器
 
